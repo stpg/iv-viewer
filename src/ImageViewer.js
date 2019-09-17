@@ -520,7 +520,14 @@ class ImageViewer {
         // } else {
         //   this.resetZoom();
         // }
-        this.destroy();
+        // hide the fullscreen
+        css(this._elements.fullScreen, { display: 'none' });
+
+        // enable scroll
+        removeCss(document.querySelector('html'), 'overflow');
+
+        // remove window event
+        this._events.onWindowResize();
         touchTime = 0;
       } else {
         touchTime = 0;
