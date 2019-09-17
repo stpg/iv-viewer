@@ -431,11 +431,13 @@ class ImageViewer {
         this.zoom(zoomValue, center);
       };
 
-      const endListener = () => {
+      const endListener = (eEnd) => {
         // unbind events
         events.pinchMove();
         events.pinchEnd();
         this._state.zooming = false;
+        // properly resume move event if one finger remains
+        if (eEnd.touches.length === 1) this._sliders.imageSlider.startHandler(eEnd);
       };
 
       // remove events if already assigned
@@ -513,11 +515,12 @@ class ImageViewer {
           y: e.pageY,
         };
       } else if (Date.now() - touchTime < 500 && Math.abs(e.pageX - point.x) < 50 && Math.abs(e.pageY - point.y) < 50) {
-        if (this._state.zoomValue === this._options.zoomValue) {
-          this.zoom(200);
-        } else {
-          this.resetZoom();
-        }
+        // if (this._state.zoomValue === this._options.zoomValue) {
+        //   this.zoom(200);
+        // } else {
+        //   this.resetZoom();
+        // }
+        this.destroy();
         touchTime = 0;
       } else {
         touchTime = 0;
